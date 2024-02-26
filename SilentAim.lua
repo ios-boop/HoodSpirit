@@ -1,7 +1,10 @@
-local SilentAim = true
+SilentAim = false
+FOV = 50
+AimKey = H
+Prediction = 0.22
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Players = game:GetService("Players")
-local Mouse = LocalPlayer:GetMouse()
+SilentAimMouse = LocalPlayer:GetMouse()
 local Camera = game:GetService("Workspace").CurrentCamera
 hookmetamethod = hookmetamethod
 Drawing = Drawing
@@ -12,7 +15,7 @@ FOV_CIRCLE.Filled = false
 FOV_CIRCLE.Thickness = 0
 FOV_CIRCLE.Transparency = 0.4
 FOV_CIRCLE.Color = Color3.new(0, 0, 0)
-FOV_CIRCLE.Radius = _G.FOV
+FOV_CIRCLE.Radius = FOV
 FOV_CIRCLE.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
 
 Options = {
@@ -32,12 +35,12 @@ local function MoveFovCircle()
 end coroutine.wrap(MoveFovCircle)()
 
 Mouse.KeyDown:Connect(function(KeyPressed)
-    if KeyPressed == (_G.AimKey:lower()) then
+    if KeyPressed == (AimKey:lower()) then
         if SilentAim == false then
             FOV_CIRCLE.Color = Color3.new(0, 0, 0)
             SilentAim = true
-        elseif _G.SilentAim == true then
-            FOV_CIRCLE.Color = Color3.new(0, 0, 0)
+        elseif SilentAim == true then
+            FOV_CIRCLE.Color = Color3.new(1, 0, 0)
             SilentAim = false
         end
     end
@@ -74,7 +77,7 @@ oldIndex = hookmetamethod(game, "__index", function(self, Index)
         if Targete ~= nil and Targete[Options.Torso] and Targete:FindFirstChild("Humanoid").Health > 0 then
             if SilentAim then
                 local ShootThis = Targete[Options.Torso] -- or Options.Head
-                local Predicted_Position = ShootThis.CFrame + (ShootThis.Velocity * _G.Prediction + Vector3.new(0,-1,0)) --  (-1) = Less blatant
+                local Predicted_Position = ShootThis.CFrame + (ShootThis.Velocity * Prediction + Vector3.new(0,-1,0)) --  (-1) = Less blatant
                 return ((Index == "Hit" and Predicted_Position))
             end
         end
