@@ -1,7 +1,3 @@
-SilentAim = false
-FOV = 50
-AimKey = H
-Prediction = 0.22
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Players = game:GetService("Players")
 SilentAimMouse = LocalPlayer:GetMouse()
